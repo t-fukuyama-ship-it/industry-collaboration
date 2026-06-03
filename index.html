@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>産学官連携 | Azabu Fukuyama Lab</title>
+  <style>
+    :root {
+      --ink: #18201d;
+      --muted: #5f6f68;
+      --line: #dfe7e2;
+      --paper: #f7faf8;
+      --white: #ffffff;
+      --green: #0f5f4a;
+      --green-deep: #0a342b;
+      --mint: #dcefe8;
+      --gold: #b8934b;
+      --shadow: 0 24px 80px rgba(18, 44, 35, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+      line-height: 1.75;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+      padding: 18px clamp(20px, 5vw, 68px);
+      color: var(--white);
+      background: linear-gradient(180deg, rgba(10, 52, 43, 0.72), rgba(10, 52, 43, 0));
+    }
+
+    .brand {
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .nav {
+      display: flex;
+      gap: 22px;
+      font-size: 0.86rem;
+      color: rgba(255, 255, 255, 0.84);
+    }
+
+    .hero {
+      min-height: 92svh;
+      display: grid;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      color: var(--white);
+      background:
+        linear-gradient(90deg, rgba(8, 42, 35, 0.96) 0%, rgba(12, 67, 54, 0.88) 43%, rgba(12, 67, 54, 0.42) 100%),
+        linear-gradient(135deg, #0a342b 0%, #15664f 52%, #d4e7de 100%);
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: linear-gradient(90deg, transparent 0%, #000 45%, #000 100%);
+      opacity: 0.42;
+      z-index: -2;
+    }
+
+    .hero-inner {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.9fr);
+      gap: clamp(36px, 6vw, 96px);
+      align-items: center;
+      padding: 120px 0 58px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 24px;
+      color: rgba(255, 255, 255, 0.74);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 42px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(3.3rem, 9vw, 8.6rem);
+      line-height: 0.92;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .hero-copy {
+      max-width: 620px;
+      margin: 28px 0 0;
+      color: rgba(255, 255, 255, 0.84);
+      font-size: clamp(1rem, 1.8vw, 1.22rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 38px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      font-weight: 700;
+      transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+    }
+
+    .button.primary {
+      color: var(--green-deep);
+      background: var(--white);
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .visual {
+      position: relative;
+      min-height: 480px;
+      animation: floatIn 900ms ease both;
+    }
+
+    .lab-plate {
+      position: absolute;
+      inset: 32px 0 20px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 28px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+
+    .lab-plate svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .metric {
+      position: absolute;
+      right: 24px;
+      bottom: 0;
+      width: min(260px, 70%);
+      padding: 20px 22px;
+      border-left: 3px solid var(--gold);
+      color: var(--green-deep);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 18px 48px rgba(7, 38, 31, 0.18);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 2.35rem;
+      line-height: 1;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    main {
+      background: var(--paper);
+    }
+
+    section {
+      padding: clamp(72px, 10vw, 128px) clamp(20px, 5vw, 68px);
+    }
+
+    .section-inner {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+    }
+
+    .section-kicker {
+      margin: 0 0 10px;
+      color: var(--gold);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      max-width: 780px;
+      font-size: clamp(2rem, 4.5vw, 4.6rem);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 28px 0 0;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .proof {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: clamp(32px, 6vw, 90px);
+      align-items: end;
+      background: var(--white);
+    }
+
+    .big-number {
+      color: var(--green);
+      font-size: clamp(5rem, 14vw, 12rem);
+      line-height: 0.86;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .big-number small {
+      font-size: clamp(1.4rem, 4vw, 3rem);
+    }
+
+    .proof-text {
+      padding-bottom: 12px;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .schemes {
+      background:
+        linear-gradient(180deg, rgba(220, 239, 232, 0.72), rgba(247, 250, 248, 0));
+    }
+
+    .scheme-list {
+      margin-top: 56px;
+      border-top: 1px solid var(--line);
+    }
+
+    .scheme-item {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 32px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .scheme-item h3 {
+      margin: 0;
+      color: var(--green-deep);
+      font-size: 1.18rem;
+    }
+
+    .scheme-item p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .topics {
+      color: var(--white);
+      background: var(--green-deep);
+    }
+
+    .topics .section-kicker,
+    .topics .lead {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      margin-top: 54px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .topic-link {
+      min-height: 270px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: clamp(28px, 4vw, 48px);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02)),
+        var(--green-deep);
+      transition: background 200ms ease, transform 200ms ease;
+    }
+
+    .topic-link:hover {
+      background:
+        linear-gradient(180deg, rgba(184,147,75,0.26), rgba(255,255,255,0.04)),
+        var(--green-deep);
+      transform: translateY(-3px);
+    }
+
+    .topic-link span {
+      color: var(--gold);
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .topic-link h3 {
+      margin: 12px 0 12px;
+      font-size: clamp(1.55rem, 3vw, 2.4rem);
+      line-height: 1.16;
+    }
+
+    .topic-link p {
+      max-width: 440px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.74);
+    }
+
+    .contact {
+      background: var(--white);
+    }
+
+    .contact-box {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: center;
+      padding-top: 34px;
+      border-top: 1px solid var(--line);
+    }
+
+    .mail {
+      display: inline-block;
+      margin-top: 18px;
+      color: var(--green);
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .form-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      padding: 0 24px;
+      border-radius: 999px;
+      color: var(--white);
+      background: var(--green);
+      font-weight: 800;
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .form-button:hover {
+      transform: translateY(-2px);
+      background: var(--green-deep);
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp 760ms ease forwards;
+    }
+
+    .delay-1 { animation-delay: 120ms; }
+    .delay-2 { animation-delay: 240ms; }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes floatIn {
+      from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @media (max-width: 840px) {
+      .site-header {
+        position: absolute;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .hero-inner,
+      .proof,
+      .contact-box {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-inner {
+        padding-top: 112px;
+      }
+
+      .visual {
+        min-height: 330px;
+      }
+
+      .metric {
+        right: 12px;
+      }
+
+      .scheme-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .topic-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" aria-label="サイトヘッダー">
+    <a class="brand" href="#">Azabu Fukuyama Lab</a>
+    <nav class="nav" aria-label="ページ内ナビゲーション">
+      <a href="#about">Overview</a>
+      <a href="#scheme">Scheme</a>
+      <a href="#topics">Topics</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow fade-up">Industry-Academia-Government Collaboration</p>
+        <h1 class="fade-up delay-1">産学官連携</h1>
+        <p class="hero-copy fade-up delay-2">獣医学の知見を、社会実装へ。基礎研究、安全性評価、臨床研究、商品化支援をつなぎ、動物と人のウェルビーイングに貢献します。</p>
+        <div class="hero-actions fade-up delay-2">
+          <a class="button primary" href="#contact">共同研究の相談</a>
+          <a class="button" href="#scheme">連携内容を見る</a>
+        </div>
+      </div>
+
+      <div class="visual" aria-label="研究と社会実装を表すビジュアル">
+        <div class="lab-plate">
+          <svg viewBox="0 0 620 560" role="img" aria-label="獣医学研究、企業連携、臨床研究、成果公表がつながる図">
+            <defs>
+              <linearGradient id="node" x1="0" x2="1">
+                <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/>
+                <stop offset="1" stop-color="#dcefe8" stop-opacity="0.82"/>
+              </linearGradient>
+            </defs>
+            <rect width="620" height="560" fill="rgba(255,255,255,0.02)"/>
+            <g stroke="rgba(255,255,255,0.32)" stroke-width="2">
+              <path d="M126 154 C 228 90, 336 92, 458 156"/>
+              <path d="M126 154 C 150 282, 220 378, 314 438"/>
+              <path d="M458 156 C 430 286, 392 382, 314 438"/>
+              <path d="M160 315 C 252 268, 360 272, 462 320"/>
+              <path d="M305 126 L 305 438"/>
+            </g>
+            <g>
+              <circle cx="126" cy="154" r="76" fill="url(#node)"/>
+              <circle cx="458" cy="156" r="76" fill="url(#node)"/>
+              <circle cx="160" cy="315" r="62" fill="rgba(255,255,255,0.74)"/>
+              <circle cx="462" cy="320" r="62" fill="rgba(255,255,255,0.74)"/>
+              <circle cx="314" cy="438" r="82" fill="rgba(255,255,255,0.92)"/>
+              <circle cx="305" cy="126" r="44" fill="rgba(184,147,75,0.94)"/>
+            </g>
+            <g fill="#0a342b" font-family="Hiragino Sans, Yu Gothic, Meiryo, sans-serif" text-anchor="middle" font-weight="700">
+              <text x="126" y="146" font-size="22">基礎研究</text>
+              <text x="126" y="176" font-size="15" fill="#5f6f68">Veterinary Science</text>
+              <text x="458" y="146" font-size="22">企業連携</text>
+              <text x="458" y="176" font-size="15" fill="#5f6f68">Industry Partners</text>
+              <text x="160" y="310" font-size="18">安全性評価</text>
+              <text x="462" y="315" font-size="18">臨床研究</text>
+              <text x="314" y="428" font-size="23">社会実装</text>
+              <text x="314" y="460" font-size="15" fill="#5f6f68">Publication / Product</text>
+              <text x="305" y="132" font-size="17" fill="#ffffff">Azabu</text>
+            </g>
+          </svg>
+        </div>
+        <div class="metric">
+          <strong>30+</strong>
+          <span>医学・化粧品・獣医学・安全性評価関連企業などとの連携実績</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="proof" id="about">
+      <div>
+        <p class="section-kicker">Overview</p>
+        <div class="big-number">30<small>社以上</small></div>
+      </div>
+      <div class="proof-text">
+        <h2>研究室を拠点に、科学的根拠のある価値を社会へ届ける。</h2>
+        <p class="lead">獣医学および動物科学専攻のスタッフと学生が、基礎研究および安全性評価に取り組んでいます。医学、化粧品、獣医学、安全性評価関連企業をはじめ、多様な企業との連携実績があります。</p>
+      </div>
+    </section>
+
+    <section class="schemes" id="scheme">
+      <div class="section-inner">
+        <p class="section-kicker">Collaboration Scheme</p>
+        <h2>研究の設計から成果公表まで、目的に合わせて伴走します。</h2>
+        <div class="scheme-list">
+          <article class="scheme-item">
+            <h3>共同研究・受託研究・学術指導</h3>
+            <p>大学産学連携および福山研究室が、研究の方向性、特許申請、安全性評価、商品化提案、他企業との連携を支援します。</p>
+          </article>
+          <article class="scheme-item">
+            <h3>臨床研究</h3>
+            <p>連携動物病院と協力し、獣医療現場に根ざした臨床的な研究を行います。</p>
+          </article>
+          <article class="scheme-item">
+            <h3>成果公表</h3>
+            <p>研究成果は、特許申請、学会発表、海外学術誌公表、セミナーなどを通じて積極的に公表しています。</p>
+          </article>
+          <article class="scheme-item">
+            <h3>人材交流</h3>
+            <p>連携企業と研究室の間で人的交流を行い、研究課題と現場課題の接点を深めます。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="topics" id="topics">
+      <div class="section-inner">
+        <p class="section-kicker">Collaboration Topics</p>
+        <h2>研究から生まれた連携テーマ。</h2>
+        <p class="lead">詳細ページへの導線として、現在の下層ページをより見つけやすく配置できます。</p>
+        <div class="topic-grid">
+          <a class="topic-link" href="https://sites.google.com/view/azabufukuyamalab/%E7%94%A3%E5%AD%A6%E9%80%A3%E6%90%BA/%E4%B9%B3%E9%85%B8%E8%8F%8C%E9%BA%BB%E5%B8%83%E6%A0%AA%E7%8A%AC%E3%81%AB%E3%81%AF%E7%8A%AC%E3%81%AE%E4%B9%B3%E9%85%B8%E8%8F%8C">
+            <span>Topic 01</span>
+            <h3>乳酸菌麻布株</h3>
+            <p>犬の健康を科学的に考える、研究室発の連携テーマです。</p>
+          </a>
+          <a class="topic-link" href="https://sites.google.com/view/azabufukuyamalab/%E7%94%A3%E5%AD%A6%E9%80%A3%E6%90%BA/%E7%8D%A3%E5%8C%BB%E7%99%82%E5%85%88%E7%AB%AF%E7%A7%91%E5%AD%A6%E6%8A%80%E8%A1%93%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BEvmat">
+            <span>Topic 02</span>
+            <h3>獣医療先端科学技術株式会社（VMAT）</h3>
+            <p>獣医学研究の知見をビジネスとして社会に届ける取り組みです。</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="section-inner contact-box">
+        <div>
+          <p class="section-kicker">Contact</p>
+          <h2>共同研究・協業に関するお問い合わせ</h2>
+          <p class="lead">福山研究室との協業、共同研究、受託研究、学術指導、乳酸菌麻布株の活用にご興味のある企業・団体の方は、下記よりお問い合わせください。</p>
+          <a class="mail" href="mailto:t-fukuyama@azabu-u.ac.jp">t-fukuyama(at)azabu-u.ac.jp</a>
+          <p class="lead">※(at)を@に変えてください。</p>
+        </div>
+        <a class="form-button" href="https://forms.gle/BNJrPUN2tp8KLzdV9" aria-label="お問い合わせフォームへ">お問い合わせフォーム</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
